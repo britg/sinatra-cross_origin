@@ -32,7 +32,7 @@ You can set global options via the normal Sinatra set method:
     set :allow_credentials, true
     set :max_age, "1728000"
 
-You can change configuration options on the fly with within routs with:
+You can change configuration options on the fly within routes with:
     
     get '/custom' do
       cross_origin :allow_origin => 'http://example.com',
@@ -41,7 +41,7 @@ You can change configuration options on the fly with within routs with:
         :max_age => "60"
 
       "My custom cross origin response"
-   end
+    end
 
 ## License
 Copyright (c) 2007, 2008, 2009 Brit Gardner
