@@ -27,15 +27,15 @@ module Sinatra
       # as a hash
       def cross_origin(hash=nil)
         return unless request.env['HTTP_ORIGIN']
-        options.set hash if hash
+        settings.set hash if hash
 
-        origin = options.allow_origin == :any ? request.env['HTTP_ORIGIN'] : options.allow_origin
-        methods = options.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
+        origin = settings.allow_origin == :any ? request.env['HTTP_ORIGIN'] : settings.allow_origin
+        methods = settings.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
 
         headers 'Access-Control-Allow-Origin' => origin,
           'Access-Control-Allow-Methods' => methods,
-          'Access-Control-Allow-Credentials' => options.allow_credentials.to_s,
-          'Access-Control-Max-Age' => options.max_age.to_s 
+          'Access-Control-Allow-Credentials' => settings.allow_credentials.to_s,
+          'Access-Control-Max-Age' => settings.max_age.to_s 
       end
     end
 
@@ -51,7 +51,7 @@ module Sinatra
 
 
       app.before do 
-        cross_origin if options.cross_origin
+        cross_origin if settings.cross_origin
       end
 
     end
