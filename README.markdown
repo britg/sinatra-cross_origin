@@ -13,7 +13,7 @@ To enable cross origin requests for all routes:
     require 'sinatra/cross_origin'
  
     configure do
-      enable cross_origin
+      enable :cross_origin
     end
 
 To only enable cross origin requests for certain routes:
