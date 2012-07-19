@@ -57,4 +57,6 @@ module Sinatra
     end
   end
 
+  register CrossOrigin
+
 end
