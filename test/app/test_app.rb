@@ -31,6 +31,11 @@ class TestApp < Sinatra::Base
     "Allowing methods"
   end
 
+  get '/allow_headers' do
+    cross_origin :allow_headers => params[:allow_headers]
+    "Allowing headers"
+  end
+
   get '/dont_allow_credentials' do
     cross_origin :allow_credentials => false
     "Not allowing credentials"

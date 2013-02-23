@@ -32,10 +32,18 @@ module Sinatra
         origin = settings.allow_origin == :any ? request.env['HTTP_ORIGIN'] : settings.allow_origin
         methods = settings.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
 
-        headers 'Access-Control-Allow-Origin' => origin,
+        headers_list = {
+          'Access-Control-Allow-Origin' => origin,
           'Access-Control-Allow-Methods' => methods,
           'Access-Control-Allow-Credentials' => settings.allow_credentials.to_s,
-          'Access-Control-Max-Age' => settings.max_age.to_s 
+          'Access-Control-Max-Age' => settings.max_age.to_s
+        }
+
+        unless settings.allow_headers.empty?
+          headers_list['Access-Control-Allow-Headers'] = settings.allow_headers.join(', ')
+        end
+
+        headers headers_list
       end
     end
 
@@ -47,8 +55,8 @@ module Sinatra
       app.set :allow_origin, :any
       app.set :allow_methods, [:post, :get, :options]
       app.set :allow_credentials, true
+      app.set :allow_headers, []
       app.set :max_age, 1728000
-
 
       app.before do 
         cross_origin if settings.cross_origin
