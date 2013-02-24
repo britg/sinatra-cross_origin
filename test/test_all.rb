@@ -14,6 +14,7 @@ class HelloTest < Test::Unit::TestCase
     assert_equal 'POST, GET, OPTIONS', last_response.headers['Access-Control-Allow-Methods']
     assert_equal 'true', last_response.headers['Access-Control-Allow-Credentials']
     assert_equal "1728000", last_response.headers['Access-Control-Max-Age']
+    assert_equal false, last_response.headers.has_key?('Access-Control-Allow-Headers')
   end
 
   def test_it_says_hello
@@ -44,6 +45,12 @@ class HelloTest < Test::Unit::TestCase
     get '/allow_methods', {:methods=>'get, post'}, {'HTTP_ORIGIN' => 'http://localhost'}
     assert last_response.ok?
     assert_equal 'GET, POST', last_response.headers['Access-Control-Allow-Methods']
+  end
+
+  def test_allow_headers
+    get '/allow_headers', {:allow_headers=>['Content-Type', 'Origin', 'Accept']}, {'HTTP_ORIGIN' => 'http://localhost'}
+    assert last_response.ok?
+    assert_equal 'Content-Type, Origin, Accept', last_response.headers['Access-Control-Allow-Headers']
   end
 
   def test_dont_allow_credentials
