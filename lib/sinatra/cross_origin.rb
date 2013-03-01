@@ -35,13 +35,10 @@ module Sinatra
         headers_list = {
           'Access-Control-Allow-Origin' => origin,
           'Access-Control-Allow-Methods' => methods,
+          'Access-Control-Allow-Headers' => settings.allow_headers.map(&:to_s).join(', '),
           'Access-Control-Allow-Credentials' => settings.allow_credentials.to_s,
           'Access-Control-Max-Age' => settings.max_age.to_s
         }
-
-        unless settings.allow_headers.empty?
-          headers_list['Access-Control-Allow-Headers'] = settings.allow_headers.join(', ')
-        end
 
         headers headers_list
       end
@@ -55,7 +52,7 @@ module Sinatra
       app.set :allow_origin, :any
       app.set :allow_methods, [:post, :get, :options]
       app.set :allow_credentials, true
-      app.set :allow_headers, []
+      app.set :allow_headers, ["*", "Content-Type", "Accept", "AUTHORIZATION", "Cache-Control"]
       app.set :max_age, 1728000
 
       app.before do 
