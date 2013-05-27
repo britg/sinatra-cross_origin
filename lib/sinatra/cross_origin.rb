@@ -37,7 +37,8 @@ module Sinatra
           'Access-Control-Allow-Methods' => methods,
           'Access-Control-Allow-Headers' => settings.allow_headers.map(&:to_s).join(', '),
           'Access-Control-Allow-Credentials' => settings.allow_credentials.to_s,
-          'Access-Control-Max-Age' => settings.max_age.to_s
+          'Access-Control-Max-Age' => settings.max_age.to_s,
+          'Access-Control-Expose-Headers' => settings.expose_headers.join(', ')
         }
 
         headers headers_list
