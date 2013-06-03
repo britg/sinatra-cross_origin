@@ -31,13 +31,15 @@ module Sinatra
 
         origin = settings.allow_origin == :any ? request.env['HTTP_ORIGIN'] : settings.allow_origin
         methods = settings.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
+        expose_headers = settings.expose_headers or %w(Cache-Control Content-Language Content-Type Expires Last-Modified Pragma)
 
         headers_list = {
           'Access-Control-Allow-Origin' => origin,
           'Access-Control-Allow-Methods' => methods,
           'Access-Control-Allow-Headers' => settings.allow_headers.map(&:to_s).join(', '),
           'Access-Control-Allow-Credentials' => settings.allow_credentials.to_s,
-          'Access-Control-Max-Age' => settings.max_age.to_s
+          'Access-Control-Max-Age' => settings.max_age.to_s,
+          'Access-Control-Expose-Headers' => expose_headers.join(', ')
         }
 
         headers headers_list
