@@ -31,7 +31,7 @@ module Sinatra
 
         origin = settings.allow_origin == :any ? request.env['HTTP_ORIGIN'] : settings.allow_origin
         methods = settings.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
-        expose_headers = settings.expose_headers or %w(Cache-Control Content-Language Content-Type Expires Last-Modified Pragma)
+        expose_headers = settings.expose_headers || %w(Cache-Control Content-Language Content-Type Expires Last-Modified Pragma)
 
         headers_list = {
           'Access-Control-Allow-Origin' => origin,
