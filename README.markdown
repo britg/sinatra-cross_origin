@@ -2,8 +2,8 @@
 A simple Sinatra extension to enable Cross Domain Resource Sharing (CORS)
 To see more on cross domain resource sharing, see https://developer.mozilla.org/En/HTTP_access_control
 
-## Installation
-    sudo gem install sinatra-cross_origin
+## Installation with Bundler
+    `gem sinatra-cross_origin`
 
 ## Examples
 
