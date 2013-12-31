@@ -31,7 +31,6 @@ module Sinatra
 
         origin = settings.allow_origin == :any ? request.env['HTTP_ORIGIN'] : settings.allow_origin
         methods = settings.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
-        expose_headers = settings.expose_headers || %w(Cache-Control Content-Language Content-Type Expires Last-Modified Pragma)
 
         headers_list = {
           'Access-Control-Allow-Origin' => origin,
@@ -39,7 +38,7 @@ module Sinatra
           'Access-Control-Allow-Headers' => settings.allow_headers.map(&:to_s).join(', '),
           'Access-Control-Allow-Credentials' => settings.allow_credentials.to_s,
           'Access-Control-Max-Age' => settings.max_age.to_s,
-          'Access-Control-Expose-Headers' => expose_headers.join(', ')
+          'Access-Control-Expose-Headers' => settings.expose_headers.join(', ')
         }
 
         headers headers_list
@@ -50,14 +49,15 @@ module Sinatra
 
       app.helpers CrossOrigin::Helpers
 
-      app.set :cross_origin, false 
+      app.set :cross_origin, false
       app.set :allow_origin, :any
       app.set :allow_methods, [:post, :get, :options]
       app.set :allow_credentials, true
       app.set :allow_headers, ["*", "Content-Type", "Accept", "AUTHORIZATION", "Cache-Control"]
       app.set :max_age, 1728000
+      app.set :expose_headers, ['Cache-Control', 'Content-Language', 'Content-Type', 'Expires', 'Last-Modified', 'Pragma']
 
-      app.before do 
+      app.before do
         cross_origin if settings.cross_origin
       end
 
