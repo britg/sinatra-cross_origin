@@ -66,3 +66,30 @@ class HelloTest < Test::Unit::TestCase
   end
 
 end
+
+class AllRoutesTest < Test::Unit::TestCase
+  include Rack::Test::Methods
+
+  def app
+    AllRoutesApp
+  end
+
+  def test_it_says_hello
+    get '/'
+    assert last_response.ok?
+    assert_equal 'Hello', last_response.body
+  end
+
+  def test_cross_origin_is_silent_on_same_origin_request
+    get '/'
+    assert last_response.ok?
+    assert_equal nil, last_response.headers['Access-Control-Allow-Origin']
+  end
+
+  def test_allow_any_origin
+    get '/', {}, {'HTTP_ORIGIN' => 'http://localhost'}
+    assert last_response.ok?
+    assert_equal 'http://localhost', last_response.headers['Access-Control-Allow-Origin']
+  end
+
+end
