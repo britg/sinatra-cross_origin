@@ -23,6 +23,12 @@ To only enable cross origin requests for certain routes:
       "This is available to cross-origin javascripts"
     end
 
+If you're using a modular application, remember to register this extension:
+
+``` ruby
+register Sinatra::CrossOrigin
+```
+
 ## Global Configuration
 
 You can set global options via the normal Sinatra set method:
