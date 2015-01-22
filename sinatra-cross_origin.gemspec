@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "test/test_helper.rb"
   ]
   s.homepage = "http://github.com/britg/sinatra-cross_origin"
+  s.license = "MIT"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.25"
   s.summary = "Cross Origin Resource Sharing helper for Sinatra"
