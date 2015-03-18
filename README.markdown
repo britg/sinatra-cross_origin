@@ -50,6 +50,21 @@ You can change configuration options on the fly within routes with:
       "My custom cross origin response"
     end
 
+## Responding to `OPTIONS`
+Many browsers send an `OPTIONS` request to a server before performing a CORS request (this is part of [the specification for CORS](http://www.w3.org/TR/cors/) ). These sorts of requests are called [preflight requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS#Preflighted_requests). Without a valid response to an `OPTIONS` request, a browser may refuse to make a CORS request (and complain that the CORS request violates the same-origin policy).
+
+Currently, this gem does not properly respond to `OPTIONS` requests. See [this issue](https://github.com/britg/sinatra-cross_origin/issues/18). You may have to add code like this in order to make your app properly respond to `OPTIONS` requests:
+
+    options "*" do
+      response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+     
+      response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+     
+      200
+    end
+
+
+
 ## License
 Copyright (c) 2007, 2008, 2009 Brit Gardner
 
