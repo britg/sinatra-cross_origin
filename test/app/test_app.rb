@@ -26,6 +26,16 @@ class TestApp < Sinatra::Base
     "Allowing any origin"
   end
 
+  get '/allow_multiple_origins' do
+    cross_origin :allow_origin => ['http://example.com', 'http://example2.com']
+    "Allowing multiple origins"
+  end
+
+  get '/allow_multiple_origins_with_reg_ex' do
+    cross_origin :allow_origin => ['http://example.com', /http:\/\/(?:sub-1|sub-2)\.example\.com/]
+    "Allowing multiple origins with regular expressions"
+  end
+
   get '/allow_methods' do
     cross_origin :allow_methods => params[:methods].split(', ')
     "Allowing methods"

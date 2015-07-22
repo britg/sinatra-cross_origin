@@ -26,10 +26,26 @@ module Sinatra
       # from global config or custom config passed
       # as a hash
       def cross_origin(hash=nil)
-        return unless request.env['HTTP_ORIGIN']
+        request_origin = request.env['HTTP_ORIGIN']
+        return unless request_origin
         settings.set hash if hash
 
-        origin = settings.allow_origin == :any ? request.env['HTTP_ORIGIN'] : settings.allow_origin
+        if settings.allow_origin == :any
+          origin = request_origin
+        else
+          allowed_origins = *settings.allow_origin # make sure its an array
+          origin = allowed_origins.join('|')       # we'll return this unless allowed
+
+          allowed_origins.each do |allowed_origin|
+            if allowed_origin.is_a?(Regexp) ? 
+                request_origin =~ allowed_origin : 
+                request_origin == allowed_origin
+              origin = request_origin
+              break
+            end
+          end
+        end
+
         methods = settings.allow_methods.map{ |m| m.to_s.upcase! }.join(', ')
 
         headers_list = {

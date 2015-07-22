@@ -41,6 +41,30 @@ class HelloTest < Test::Unit::TestCase
     assert_equal 'http://example.com', last_response.headers['Access-Control-Allow-Origin']
   end
 
+  def test_allow_multiple_origins
+    get '/allow_multiple_origins', {}, {'HTTP_ORIGIN' => 'http://example.com'}
+    assert last_response.ok?
+    assert_equal 'http://example.com', last_response.headers['Access-Control-Allow-Origin']
+    
+    get '/allow_multiple_origins', {}, {'HTTP_ORIGIN' => 'http://example2.com'}
+    assert last_response.ok?
+    assert_equal 'http://example2.com', last_response.headers['Access-Control-Allow-Origin']
+    
+    get '/allow_multiple_origins', {}, {'HTTP_ORIGIN' => 'http://example3.com'}
+    assert last_response.ok?
+    assert_equal 'http://example.com|http://example2.com', last_response.headers['Access-Control-Allow-Origin']
+  end
+
+  def test_allow_multiple_origins_with_reg_ex
+    get '/allow_multiple_origins_with_reg_ex', {}, {'HTTP_ORIGIN' => 'http://example.com'}
+    assert last_response.ok?
+    assert_equal 'http://example.com', last_response.headers['Access-Control-Allow-Origin']
+    
+    get '/allow_multiple_origins_with_reg_ex', {}, {'HTTP_ORIGIN' => 'http://sub-1.example.com'}
+    assert last_response.ok?
+    assert_equal 'http://sub-1.example.com', last_response.headers['Access-Control-Allow-Origin']
+  end
+
   def test_allow_methods
     get '/allow_methods', {:methods=>'get, post'}, {'HTTP_ORIGIN' => 'http://localhost'}
     assert last_response.ok?
